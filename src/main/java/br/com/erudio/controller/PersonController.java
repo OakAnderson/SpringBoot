@@ -1,8 +1,8 @@
 package br.com.erudio.controller;
 
 import br.com.erudio.converter.DozerConverter;
-import br.com.erudio.data.model.Person;
 import br.com.erudio.data.vo.PersonVO;
+import br.com.erudio.data.vo.PersonVOV2;
 import br.com.erudio.services.PersonServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +33,12 @@ public class PersonController {
     public PersonVO create(@RequestBody PersonVO person) {
         return services.create(person);
     }
+
+    @PostMapping("/v2")
+    public PersonVOV2 createV2(@RequestBody PersonVOV2 person) {
+        return services.createV2(person);
+    }
+
 
     @PutMapping
     public PersonVO update(@RequestBody PersonVO person) {
