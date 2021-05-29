@@ -1,4 +1,4 @@
-package br.com.erudio.restwithspringbootudemy.model;
+package br.com.erudio.data.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,7 +26,7 @@ public class Person implements Serializable {
     @Column(nullable = false, length = 6)
     private String gender;
 
-    public Person () {
+    public Person() {
 
     }
 
@@ -75,13 +75,13 @@ public class Person implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Person person = (Person) o;
+        Person personVO = (Person) o;
 
-        if (!Objects.equals(id, person.id)) return false;
-        if (!Objects.equals(firstName, person.firstName)) return false;
-        if (Objects.equals(lastName, person.lastName)) {
-            if (Objects.equals(address, person.address)) {
-                return Objects.equals(gender, person.gender);
+        if (!Objects.equals(id, personVO.id)) return false;
+        if (!Objects.equals(firstName, personVO.firstName)) return false;
+        if (Objects.equals(lastName, personVO.lastName)) {
+            if (Objects.equals(address, personVO.address)) {
+                return Objects.equals(gender, personVO.gender);
             }
         }
         return false;
