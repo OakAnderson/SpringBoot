@@ -1,4 +1,4 @@
-package br.com.erudio.restwithspringbootudemy.exception;
+package br.com.erudio.exception;
 
 import java.io.Serializable;
 import java.util.Date;

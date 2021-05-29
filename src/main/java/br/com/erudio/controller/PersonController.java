@@ -1,7 +1,9 @@
-package br.com.erudio.restwithspringbootudemy.controller;
+package br.com.erudio.controller;
 
-import br.com.erudio.restwithspringbootudemy.model.Person;
-import br.com.erudio.restwithspringbootudemy.services.PersonServices;
+import br.com.erudio.converter.DozerConverter;
+import br.com.erudio.data.model.Person;
+import br.com.erudio.data.vo.PersonVO;
+import br.com.erudio.services.PersonServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,24 +18,24 @@ public class PersonController {
     private PersonServices services;
 
     @GetMapping
-    public List<Person> findAll() {
+    public List<PersonVO> findAll() {
 
         return services.findAll();
     }
 
     @GetMapping("/{id}")
-    public Person findById(@PathVariable Long id) {
-
-        return services.findById(id);
+    public PersonVO findById(@PathVariable Long id) {
+        var entity = services.findById(id);
+        return DozerConverter.parseObject(entity, PersonVO.class);
     }
 
     @PostMapping
-    public Person create(@RequestBody Person person ) {
+    public PersonVO create(@RequestBody Person person) {
         return services.create(person);
     }
 
     @PutMapping
-    public Person update(@RequestBody Person person ) {
+    public PersonVO update(@RequestBody PersonVO person) {
         return services.update(person);
     }
 
