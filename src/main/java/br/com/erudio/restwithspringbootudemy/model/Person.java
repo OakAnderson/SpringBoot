@@ -1,7 +1,5 @@
 package br.com.erudio.restwithspringbootudemy.model;
 
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
