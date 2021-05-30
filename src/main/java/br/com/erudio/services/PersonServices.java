@@ -26,7 +26,7 @@ public class PersonServices {
         return DozerConverter.parseObject(person, PersonVO.class);
     }
 
-    public PersonVO create (Person person) {
+    public PersonVO create (PersonVO person) {
         var entity = DozerConverter.parseObject(person, Person.class);
 
         return DozerConverter.parseObject(repository.save(entity), PersonVO.class);
