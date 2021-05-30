@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import br.com.erudio.converter.mocks.MockPerson;
 import br.com.erudio.data.model.Person;
-import br.com.erudio.data.vo.PersonVO;
+import br.com.erudio.data.vo.v1.PersonVO;
 
 public class DozerConverterTest {
 
