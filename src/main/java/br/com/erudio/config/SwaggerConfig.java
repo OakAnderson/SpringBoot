@@ -9,11 +9,14 @@ import org.springframework.hateoas.mediatype.collectionjson.CollectionJsonLinkDi
 import org.springframework.plugin.core.SimplePluginRegistry;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Configuration
@@ -24,9 +27,10 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("br.com.erudio"))
                 .paths(PathSelectors.any())
-                .build();
+                .build()
+                .apiInfo(apiInfo());
     }
 
     @Bean
@@ -34,5 +38,17 @@ public class SwaggerConfig {
         List<LinkDiscoverer> plugins = new ArrayList<>();
         plugins.add(new CollectionJsonLinkDiscoverer());
         return new LinkDiscoverers(SimplePluginRegistry.create(plugins));
+    }
+
+    private ApiInfo apiInfo() {
+        return new ApiInfo(
+                "RESTful API with Spring Boot 2.5",
+                "Some description about your API.",
+                "v1",
+                "Terms of Service Url",
+                new Contact("Anderson Carvalho", "", "andersonfelipe01@live.com"),
+                "License of API",
+                "License of URL",
+                Collections.emptyList());
     }
 }

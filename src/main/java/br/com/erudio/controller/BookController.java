@@ -2,6 +2,8 @@ package br.com.erudio.controller;
 
 import br.com.erudio.data.vo.v1.BookVO;
 import br.com.erudio.services.BookServices;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,11 +15,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api/book/v1")
+@Api(value = "Book Endpoint", tags = "BookEndpoint")
 public class BookController {
 
     @Autowired
     private BookServices services;
 
+    @ApiOperation("Find all books recorded")
     @GetMapping(produces = { "application/json", "application/xml", "application/x-yaml" })
     public List<BookVO> findAll() {
         List<BookVO> books = services.findAll();
@@ -31,6 +35,7 @@ public class BookController {
         return books;
     }
 
+    @ApiOperation("Find a book by its ID using the path variable /{id}")
     @GetMapping(value = "/{id}", produces = { "application/json", "application/xml", "application/x-yaml" })
     public BookVO findById( @PathVariable Long id ) {
         BookVO bookVO = services.findById(id);
@@ -39,6 +44,7 @@ public class BookController {
         return bookVO;
     }
 
+    @ApiOperation("Record a new book into the API database")
     @PostMapping(
             produces = { "application/json", "application/xml", "application/x-yaml" },
             consumes = { "application/json", "application/xml", "application/x-yaml" }
@@ -50,6 +56,7 @@ public class BookController {
         return bookVO;
     }
 
+    @ApiOperation("Alter the data of a book recorded in the API database")
     @PutMapping(
             produces = { "application/json", "application/xml", "application/x-yaml" },
             consumes = { "application/json", "application/xml", "application/x-yaml" }
@@ -61,6 +68,7 @@ public class BookController {
         return bookVO;
     }
 
+    @ApiOperation("Delete a book from the API DataBase")
     @DeleteMapping ("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete (@PathVariable Long id) {
