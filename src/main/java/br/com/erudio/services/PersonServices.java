@@ -20,9 +20,10 @@ public class PersonServices {
         return DozerConverter.parseListObjects(repository.findAll(), PersonVO.class);
     }
 
-    public Person findById(Long id ) {
-        return repository.findById(id)
+    public PersonVO findById(Long id ) {
+        Person person = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
+        return DozerConverter.parseObject(person, PersonVO.class);
     }
 
     public PersonVO create (Person person) {
