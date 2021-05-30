@@ -24,8 +24,7 @@ public class PersonController {
 
     @GetMapping("/{id}")
     public PersonVO findById(@PathVariable Long id) {
-        var entity = services.findById(id);
-        return DozerConverter.parseObject(entity, PersonVO.class);
+        return services.findById(id);
     }
 
     @PostMapping
