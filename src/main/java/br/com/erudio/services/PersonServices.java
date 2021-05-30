@@ -40,7 +40,7 @@ public class PersonServices {
         entity.setAddress(person.getAddress());
         entity.setGender(person.getGender());
 
-        return DozerConverter.parseObject(entity, PersonVO.class);
+        return DozerConverter.parseObject(repository.save(entity), PersonVO.class);
 
     }
 
