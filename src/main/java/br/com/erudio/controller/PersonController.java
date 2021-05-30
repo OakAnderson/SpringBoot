@@ -1,6 +1,5 @@
 package br.com.erudio.controller;
 
-import br.com.erudio.converter.DozerConverter;
 import br.com.erudio.data.vo.v1.PersonVO;
 import br.com.erudio.services.PersonServices;
 import org.springframework.beans.factory.annotation.Autowired;
