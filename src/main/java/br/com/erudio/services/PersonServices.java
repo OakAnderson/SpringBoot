@@ -20,13 +20,12 @@ public class PersonServices {
         return DozerConverter.parseListObjects(repository.findAll(), PersonVO.class);
     }
 
-    public PersonVO findById(Long id ) {
-        var entity = repository.findById(id)
+    public Person findById(Long id ) {
+        return repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
-        return DozerConverter.parseObject(entity, PersonVO.class);
     }
 
-    public PersonVO create (PersonVO person) {
+    public PersonVO create (Person person) {
         var entity = DozerConverter.parseObject(person, Person.class);
 
         return DozerConverter.parseObject(repository.save(entity), PersonVO.class);
@@ -41,7 +40,7 @@ public class PersonServices {
         entity.setAddress(person.getAddress());
         entity.setGender(person.getGender());
 
-        return DozerConverter.parseObject(entity, PersonVO.class);
+        return DozerConverter.parseObject(repository.save(entity), PersonVO.class);
 
     }
 
