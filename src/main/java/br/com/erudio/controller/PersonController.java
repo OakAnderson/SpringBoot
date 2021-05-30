@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+
 @RestController
 @RequestMapping("/api/person/v1")
 public class PersonController {
@@ -22,7 +26,10 @@ public class PersonController {
 
     @GetMapping(value = "/{id}", produces = { "application/json", "application/xml", "application/x-yaml" })
     public PersonVO findById(@PathVariable Long id) {
-        return services.findById(id);
+        PersonVO personVO = services.findById(id);
+        personVO.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
+
+        return personVO;
     }
 
     @PostMapping(
