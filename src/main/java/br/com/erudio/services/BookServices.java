@@ -29,7 +29,7 @@ public class BookServices {
     public BookVO create( BookVO book ) {
         var entity = DozerConverter.parseObject(book, Book.class);
 
-        return  DozerConverter.parseObject(repository.save(entity), BookVO.class);
+        return DozerConverter.parseObject(repository.save(entity), BookVO.class);
     }
 
     public BookVO update( BookVO book ) {
