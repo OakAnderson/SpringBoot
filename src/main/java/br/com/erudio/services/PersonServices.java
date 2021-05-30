@@ -25,7 +25,7 @@ public class PersonServices {
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
     }
 
-    public PersonVO create (Person person) {
+    public PersonVO create (PersonVO person) {
         var entity = DozerConverter.parseObject(person, Person.class);
 
         return DozerConverter.parseObject(repository.save(entity), PersonVO.class);

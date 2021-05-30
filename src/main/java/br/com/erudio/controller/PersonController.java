@@ -30,7 +30,7 @@ public class PersonController {
     }
 
     @PostMapping
-    public PersonVO create(@RequestBody Person person) {
+    public PersonVO create(@RequestBody PersonVO person) {
         return services.create(person);
     }
 
