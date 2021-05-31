@@ -5,7 +5,14 @@ import br.com.erudio.services.BookServices;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +30,17 @@ public class BookController {
 
     @ApiOperation("Find all books recorded")
     @GetMapping(produces = { "application/json", "application/xml", "application/x-yaml" })
-    public List<BookVO> findAll() {
-        List<BookVO> books = services.findAll();
+    public ResponseEntity<PagedModel<BookVO>> findAll(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "limit", defaultValue = "15") int limit,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction,
+            PagedResourcesAssembler assembler) {
+
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+
+        Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "title"));
+
+        Page<BookVO> books = services.findAll(pageable);
         books.forEach(
                 book -> book.add(linkTo(methodOn(BookController.class)
                     .findById(book.getKey()))
@@ -32,7 +48,7 @@ public class BookController {
                 )
         );
 
-        return books;
+        return new ResponseEntity(assembler.toModel(books), HttpStatus.OK);
     }
 
     @ApiOperation("Find a book by its ID using the path variable /{id}")
