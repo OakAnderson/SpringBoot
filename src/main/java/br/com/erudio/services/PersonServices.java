@@ -7,6 +7,7 @@ import br.com.erudio.repository.PersonRepository;
 import br.com.erudio.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -43,6 +44,16 @@ public class PersonServices {
 
         return DozerConverter.parseObject(repository.save(entity), PersonVO.class);
 
+    }
+
+    @Transactional
+    public PersonVO disablePerson(Long id) {
+        repository.disablePerson(id);
+        return DozerConverter.parseObject(
+                repository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID")),
+                PersonVO.class
+        );
     }
 
     public void delete ( Long id ) {

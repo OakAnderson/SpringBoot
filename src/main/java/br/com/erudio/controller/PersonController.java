@@ -68,6 +68,16 @@ public class PersonController {
         return personVO;
     }
 
+    @ApiOperation(value = "Disable a specific person by its ID")
+    @PatchMapping(value = "/{id}",
+            produces = { "application/json", "application/xml", "application/x-yaml" })
+    public PersonVO disablePerson( @PathVariable Long id) {
+        PersonVO person = services.disablePerson(id);
+        person.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
+
+        return person;
+    }
+
     @ApiOperation(value = "Delete a person from API database using his ID as a path variable /{id}")
     @DeleteMapping ("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
