@@ -26,13 +26,15 @@ public class PersonController {
     @Autowired
     private PersonServices services;
 
+    @Autowired
+    private PagedResourcesAssembler<PersonVO> assembler;
+
     @ApiOperation(value = "Find all people recorded")
     @GetMapping(produces = { "application/json", "application/xml", "application/x-yaml" })
-    public ResponseEntity<PagedModel<PersonVO>> findAll(
+    public ResponseEntity<?> findAll(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "limit", defaultValue = "15") int limit,
-            @RequestParam(value = "direction", defaultValue = "asc") String direction,
-            PagedResourcesAssembler assembler) {
+            @RequestParam(value = "direction", defaultValue = "asc") String direction) {
 
         var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
 
@@ -46,7 +48,33 @@ public class PersonController {
                         )
         );
 
-        return new ResponseEntity(assembler.toModel(people), HttpStatus.OK);
+        PagedModel<?> pagedModel = assembler.toModel(people);
+
+        return ResponseEntity.ok(pagedModel);
+    }
+
+    @ApiOperation(value = "Find all people recorded")
+    @GetMapping(value = "/findPersonByName/{firstName}", produces = { "application/json", "application/xml", "application/x-yaml" })
+    public ResponseEntity<?> findPersonByName(
+            @PathVariable("firstName") String firstName,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "limit", defaultValue = "15") int limit,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction) {
+
+        var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
+
+        Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "firstName"));
+
+        Page<PersonVO> people = services.findPersonByName(firstName, pageable);
+        people.forEach(
+                person -> person.add(linkTo(methodOn(PersonController.class)
+                        .findById(person.getKey()))
+                        .withSelfRel()
+                )
+        );
+        PagedModel<?> pagedModel = assembler.toModel(people);
+
+        return ResponseEntity.ok(pagedModel);
     }
 
     @ApiOperation(value = "Find data of a person with the ID as a PathVariable /{id}")
