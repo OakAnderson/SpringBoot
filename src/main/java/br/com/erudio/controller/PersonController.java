@@ -5,13 +5,15 @@ import br.com.erudio.services.PersonServices;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -26,16 +28,17 @@ public class PersonController {
 
     @ApiOperation(value = "Find all people recorded")
     @GetMapping(produces = { "application/json", "application/xml", "application/x-yaml" })
-    public List<PersonVO> findAll(
+    public ResponseEntity<PagedModel<PersonVO>> findAll(
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "limit", defaultValue = "12") int limit,
-            @RequestParam(value = "direction", defaultValue = "asc") String direction ) {
+            @RequestParam(value = "limit", defaultValue = "15") int limit,
+            @RequestParam(value = "direction", defaultValue = "asc") String direction,
+            PagedResourcesAssembler assembler) {
 
         var sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
 
         Pageable pageable = PageRequest.of(page, limit, Sort.by(sortDirection, "firstName"));
 
-        List<PersonVO> people = services.findAll(pageable);
+        Page<PersonVO> people = services.findAll(pageable);
         people.forEach(
                         person -> person.add(linkTo(methodOn(PersonController.class)
                                 .findById(person.getKey()))
@@ -43,7 +46,7 @@ public class PersonController {
                         )
         );
 
-        return people;
+        return new ResponseEntity(assembler.toModel(people), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Find data of a person with the ID as a PathVariable /{id}")
