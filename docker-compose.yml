@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.3'
 services:
   db:
     image: oakanderson/mysql-rest-with-spring-boot-udemy
@@ -13,11 +13,6 @@ services:
       MYSQL_USER: spring
       MYSQL_PASSWORD: 5rEF5r
       MYSQL_DATABASE: rest_with_spring_boot_udemy
-    healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "db"]
-      timeout: 20s
-      interval: 10s
-      retries: 10
     ports:
       - "3308:3306"
     networks:
@@ -42,9 +37,6 @@ services:
     command: mvn clean spring-boot:run
     links:
       - db
-    depends_on:
-      db:
-        condition: service_healthy
     networks:
       - udemy-network
 networks:
