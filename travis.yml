@@ -1,0 +1,13 @@
+language: bash
+services: docker
+script:
+  - docker-compose build
+before-deploy:
+  - echo "${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME}"
+deploy:
+  provider: script
+  script:
+    docker push oakanderson/rest-with-spring-boot-udemy
+    docker push oakanderson/mysql-rest-with-spring-boot-udemy
+  on:
+    branch: master
