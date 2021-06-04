@@ -6,7 +6,8 @@ python:
 services: docker
 before_install:
   - sudo apt-get update
-  - rm -rf target/
+  - sudo mkdir /SpringBootUdemy /SpringBootUdemy/upload
+  - mvn -N io.takari:maven:wrapper
   - mvn clean package
 script:
   - docker-compose build
