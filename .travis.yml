@@ -6,7 +6,7 @@ python:
 services: docker
 before_install:
   - sudo apt-get update
-  - mvn clean package
+  - sudo mvn clean package
 script:
   - docker-compose build
 before-deploy:
