@@ -21,7 +21,7 @@ deploy:
   on:
     branch: master
 after_success:
-  - sudo apt-get -y install python3-pip python-dev awscli
+  - sudo apt-get -y install python3-pip python-dev awscli jq
   - sudo pip3 install -U setuptools virtualenvwrapper
   - python3 -V
   - pip3 -V
@@ -31,9 +31,6 @@ after_success:
   - aws ecr get-login-password --region $AMS_DEFAULT_REGION | docker login --username AWS --password-stdin $IMAGE_REPO_URL
   - docker tag rest-with-spring-boot-udemy:latest $IMAGE_REPO_URL:$TRAVIS_JOB_ID
   - docker push $IMAGE_REPO_URL:$TRAVIS_JOB_ID
-  - sudo add-apt-repository ppa:eugenesan/ppa
-  - sudo apt-get update
-  - sudo apt-get install jq -y
   - curl https://raw.githubusercontent.com/silinternational/ecs-deploy/master/ecs-deploy | sudo tee -a /usr/bin/ecs-deploy
   - sudo chmod +x /usr/bin/ecs-deploy
   - echo "AWS ECS-Deploy Setup is Configured"
