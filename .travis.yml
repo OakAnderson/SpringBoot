@@ -6,6 +6,7 @@ python:
 services: docker
 before_install:
   - sudo apt-get update
+  - mkdir /SpringBootUdemy /SpringBootUdemy/upload
   - mvn clean package
 script:
   - docker-compose build
