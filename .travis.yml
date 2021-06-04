@@ -23,10 +23,10 @@ deploy:
 after_success:
   - sudo apt-get -y install python3-pip python-dev awscli jq
   - sudo -H pip3 install --upgrade pip
-  - pip3 install -U setuptools virtualenvwrapper
-  - pip3 -V
-  - pip3 uninstall wheel
-  - pip3 install wheel
+  - pip install -U setuptools virtualenvwrapper
+  - pip -V
+  - pip uninstall wheel
+  - pip install wheel
   - export PATH=$PATH:$HOME/.local/bin
   - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $IMAGE_REPO_URL
   - docker tag rest-with-spring-boot-udemy:latest $IMAGE_REPO_URL:$TRAVIS_JOB_ID
