@@ -1,12 +1,9 @@
 version: '3.3'
 services:
   db:
-    image: oakanderson/mysql-rest-with-spring-boot-udemy
+    image: mysql:8.0.25
     container_name: mysql
     restart: always
-    build:
-      context: Dockerfiles/mysql
-      dockerfile: Dockerfile
     environment:
       TZ: America/Sao_Paulo
       MYSQL_ROOT_PASSWORD: 5rEF5r
@@ -29,13 +26,12 @@ services:
     environment:
       TZ: America/Sao_Paulo
       SPRING_BOOT_ENVIROMENT: Production
-    volumes:
-      - .:/RestWithSpringBootUdemy
-      - ~/.m2:/root/.m2
     ports:
     - "8080:8080"
-    command: mvn clean spring-boot:run
+    command: mvn spring-boot:run
     links:
+      - db
+    depends_on:
       - db
     networks:
       - udemy-network
