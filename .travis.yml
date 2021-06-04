@@ -32,6 +32,6 @@ after_success:
   - aws ecr-public get-login-password --region $DEFAULT_REGION | docker login --username AWS --password-stdin public.ecr.aws/k5u3m7u5
   - docker tag rest-with-spring-boot-udemy:latest $IMAGE_REPO_URL:$TRAVIS_JOB_ID
   - docker push $IMAGE_REPO_URL:$TRAVIS_JOB_ID
-  - aws ecs update-service --service $SERVICE_NAME --task-definition $TASK_DEFINITION
+  - aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --task-definition $TASK_DEFINITION
 notifications:
   email: false
