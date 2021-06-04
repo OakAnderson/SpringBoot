@@ -1,5 +1,12 @@
-language: bash
+language: java
+jdk:
+  - oraclejdk11
+python:
+  - "3.6"
 services: docker
+before_install:
+  - sudo apt-get update
+  - mvn clean package
 script:
   - docker-compose build
 before-deploy:
@@ -7,7 +14,22 @@ before-deploy:
 deploy:
   provider: script
   script:
-    docker push oakanderson/rest-with-spring-boot-udemy
-    docker push oakanderson/mysql-rest-with-spring-boot-udemy
+    docker tag rest-with-spring-boot-udemy:latest oakanderson/rest-with-spring-boot-udemy:$TRAVIS_JOB_ID;
+    docker push oakanderson/rest-with-spring-boot-udemy;
   on:
     branch: master
+after_success:
+  - sudo apt-get -y install python3-pip python-dev
+  - sudo pip3 install -U setuptools virtualenvwrapper
+  - python3 -V
+  - pip3 -V
+  - pip3 uninstall wheel
+  - pip3 install wheel
+  - pip3 install awscli --upgrade --user
+  - export PATH=$PATH:$HOME/.local/bin
+  - aws ecr-public get-login-password --region $DEFAULT_REGION | docker login --username AWS --password-stdin public.ecr.aws/k5u3m7u5
+  - docker tag rest-with-spring-boot-udemy:latest $IMAGE_REPO_URL:$TRAVIS_JOB_ID
+  - docker push $IMAGE_REPO_URL:$TRAVIS_JOB_ID
+  - aws ecs update-service --service $SERVICE_NAME --task-definition $TASK_DEFINITION
+notifications:
+  email: false
