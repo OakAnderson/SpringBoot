@@ -26,7 +26,7 @@ after_success:
   - python3 -V
   - python3 -m pip -V
   - python3 -m pip uninstall wheel
-  - pyhon3 -m pip install wheel
+  - python3 -m pip install wheel
   - export PATH=$PATH:$HOME/.local/bin
   - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $IMAGE_REPO_URL
   - docker tag rest-with-spring-boot-udemy:latest $IMAGE_REPO_URL:$TRAVIS_JOB_ID
