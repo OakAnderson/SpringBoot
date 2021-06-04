@@ -22,8 +22,8 @@ deploy:
     branch: master
 after_success:
   - sudo apt-get -y install python3-pip python-dev awscli jq
+  - python3 -m pip install --upgrade pip
   - python3 -m pip install -U setuptools virtualenvwrapper
-  - python3 -V
   - python3 -m pip -V
   - python3 -m pip uninstall wheel
   - python3 -m pip install wheel
