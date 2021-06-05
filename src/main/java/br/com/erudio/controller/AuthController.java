@@ -63,7 +63,7 @@ public class AuthController {
         return ResponseEntity.ok(model);
     }
 
-    @ApiOperation(value = "Authenticate a user by credentials")
+    @ApiOperation(value = "User signin")
     @PostMapping(
             value = "/signin",
             produces = { "application/json", "application/xml", "application/x-yaml" },

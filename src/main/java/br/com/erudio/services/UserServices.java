@@ -46,7 +46,7 @@ public class UserServices implements UserDetailsService {
         }
 
         if ( usernameExist(userVO.getUsername()) ) {
-            throw new UserAlreadyExistException("The username" + userVO.getUsername() + " is already in use");
+            throw new UserAlreadyExistException("The username " + userVO.getUsername() + " is already in use");
         }
 
         String password = new BCryptPasswordEncoder(16).encode(userVO.getPassword());
