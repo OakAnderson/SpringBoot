@@ -1,9 +1,6 @@
 package br.com.erudio.exception.handler;
 
-import br.com.erudio.exception.ExceptionResponse;
-import br.com.erudio.exception.InvalidJwtAuthenticationException;
-import br.com.erudio.exception.ResourceNotFoundException;
-import br.com.erudio.exception.UserAlreadyExistException;
+import br.com.erudio.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -43,7 +40,21 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     public final ResponseEntity<ExceptionResponse> userAlreadyExistException(Exception ex, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(
                 new Date(), ex.getMessage(), request.getDescription(false));
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(FileStorageException.class)
+    public final ResponseEntity<ExceptionResponse> fileStorageException(Exception ex, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(MyFileNotFoundException.class)
+    public final ResponseEntity<ExceptionResponse> myFileNotFoundException(Exception ex, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 
 }
