@@ -21,6 +21,9 @@ public class User implements UserDetails, Serializable {
     @Column
     private Long id;
 
+    @Column(unique = true)
+    private String email;
+
     @Column
     private String password;
 
@@ -63,6 +66,26 @@ public class User implements UserDetails, Serializable {
         return this.permissions;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public void setPermissions(List<Permission> permissions) {
+        this.permissions = permissions;
+    }
+
     @Override
     public String getPassword() {
         return this.password;
@@ -91,6 +114,21 @@ public class User implements UserDetails, Serializable {
     @Override
     public boolean isEnabled() {
         return this.enabled;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setNewAccount() {
+        this.accountNonExpired = true;
+        this.accountNonLocked = true;
+        this.credentialsNonExpired = true;
+        this.enabled = true;
     }
 
     @Override
